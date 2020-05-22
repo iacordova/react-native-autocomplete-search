@@ -30,6 +30,7 @@ class InputAutoSuggest extends Component {
     const existingItem = { id, name };
     this.setState({
       value: name,
+      data: [],
     });
     onDataSelectedChange(existingItem);
   };
@@ -45,7 +46,7 @@ class InputAutoSuggest extends Component {
       staticData,
     } = this.props;
     this.setState({ value: text });
-    let suggestData = null;
+    let suggestData = null; 
     if (staticData != null) {
       try {
         suggestData = !text ? staticData : suggest.searchForRelevant(text, staticData, itemFormat);
@@ -86,23 +87,25 @@ class InputAutoSuggest extends Component {
 
   render() {
     const { value, data } = this.state;
-    const { inputStyle, flatListStyle } = this.props;
-    return (
-      <View style={style.container}>
+    const { inputStyle, flatListStyle, placeholder, placeholderTextColor } = this.props;
+    return (      
+      <View style={style.container}>        
         <TextInput
           style={[style.input, inputStyle]}
           value={value}
+          placeholder={placeholder}
+          placeholderTextColor={placeholderTextColor}
           clearButtonMode="while-editing"
           onChangeText={this.searchList}
-        />
+        />            
         <FlatList
           style={[style.flatList, flatListStyle]}
           data={data}
           extraData={this.state}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
-        />
-      </View>
+        />              
+      </View>     
     );
   }
 }
